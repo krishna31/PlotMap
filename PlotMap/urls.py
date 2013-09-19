@@ -10,7 +10,8 @@ urlpatterns = patterns('',
     # Examples:
      url(r'^$', 'plotmap.views.home', name='home'),
     # url(r'^PlotMap/', include('PlotMap.foo.urls')),
-     url(r'ajax/(\d+)/$', 'plotmap.views.getLocation', name='getLocation'),
+     url(r'ajax', 'plotmap.views.getLocation', name='getLocation'),
+     url(r'path/(\d+)/$', 'plotmap.views.getPath', name='getPath'),	
     # Uncomment the admin/doc line below to enable admin documentation:
      url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

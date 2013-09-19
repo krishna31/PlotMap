@@ -11,13 +11,30 @@ def home(request):
 	variables = RequestContext(request, {'data' : data})
      	template='home.html'
      	return render_to_response(template, variables)
-def getLocation(request,id):
-	id1=int(id)+1
-	data=location.objects.filter(id=id1)
+def getPath(request,id):
+	path.objects.filter(id=id)
+	if path:
+		path1=path.objects.get(id=id)
+		data=path1.pathid.all()[0]
+		variables = RequestContext(request, {'data' : data})
+     		template='home.html'
+     		return render_to_response(template, variables)
+		
+def getLocation(request,incr=0):
+	if request.is_ajax():
+		incr=request.POST.get('incr', False)
+		incr=int(incr)+1
+		id1=request.POST.get('id', False)
+	path1=path.objects.get(id=id1)
+	data=data=path1.pathid.all()
 	dic={}
-	if data:
-		data=location.objects.get(id=id1)
+	len1=len(path1.pathid.all())
+	print len1
+	lst=[]
+	if (incr < len1):
+		data=path1.pathid.all()[incr]
 		dic['id']=data.id
+		dic['incr']=incr
 		dic['name']=data.name
 		dic['lat']=float(data.lat)
 		dic['long']=float(data.lang)
