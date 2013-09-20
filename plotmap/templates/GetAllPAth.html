@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAJhV3LE9P0_GiojlU04Qb1CBTE3yhWNzo&sensor=false"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+<body>
+<div>
+<b>Hello  Mr. {{user}}</b>
+</div>
+<div style="width:10%;float:left;height:600px;background:#C8C8C8 ">
+{% if  user.is_superuser %}
+<a href="/getAllPath">All Path</a><br/>
+<a href="/path/1">Path1</a><br/>
+<a href="/path/2">Path2</a><br/>
+<a href="/path/3">Path3</a>
+{% elif user.is_staff %}
+<a href="/getAllPath">All Path</a><br/>
+<a href="/path/1">Path1</a><br/>
+<a href="/path/2">Path2</a><br/>
+{% else %}
+<a href="/path/3">Path3</a>
+{% endif %}
+</div>
+<div id="plotmap" style="width:90%;height:600px;"></div>
+<input id="dataid" type="hidden" value="0"/>
+<script>
+//var myCenter=new google.maps.LatLng(lat,lang);
+myTrip1=[];
+myTrip2=[];
+myTrip3=[];
+var myCenter=new google.maps.LatLng({{path1.lat}},{{path1.lang}});
+var myCenter2=new google.maps.LatLng({{path2.lat}},{{path2.lang}});
+var myCenter3=new google.maps.LatLng({{path3.lat}},{{path3.lang}});
+var mapProp = {
+  center:myCenter,	
+  zoom:5,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+var map=new google.maps.Map(document.getElementById("plotmap"),mapProp);
+{% if  user.is_superuser %}
+setMarker(myCenter,'{{path1.name}}',{{path1.lat}},{{path1.lang}});
+setMarker(myCenter2,'{{path2.name}}',{{path2.lat}},{{path2.lang}});
+setMarker(myCenter3,'{{path3.name}}',{{path3.lat}},{{path3.lang}});	
+{% elif user.is_staff %}
+setMarker(myCenter,'{{path1.name}}',{{path1.lat}},{{path1.lang}});
+setMarker(myCenter2,'{{path2.name}}',{{path2.lat}},{{path2.lang}});
+{% endif %}
+
+function setMarker(myCenter,name,lat,lang)
+	{
+		var content ="<div>Name:"+name+"<br> Latitude:"+lat+" <br> Langitude:"+lang+"</div>"
+		var marker=new google.maps.Marker({
+  		position:myCenter,
+  		});
+	marker.setMap(map);
+		var infowindow = new google.maps.InfoWindow({
+  		content:content
+  		});
+	infowindow.open(map,marker);
+
+	}
+
+function path1(myTrip,myCenter,name,lat,lang)
+{
+//myTrip.push(myCenter);
+var flightPath=new google.maps.Polyline({
+  path:myTrip,
+  strokeColor:"#B6B6B4",
+  strokeOpacity:0.8,
+  strokeWeight:4
+  });
+flightPath.setMap(map);
+setMarker(myCenter,name,lat,lang);
+}
+
+function plotmaps()
+	{
+		incr=document.getElementById("dataid").value;
+		$.ajax({
+       	       		url:'/getAllPath',
+			type: "POST",
+			data:{'incr':incr,'id':'{{data.pathid.id}}',csrfmiddlewaretoken: '{{ csrf_token }}'},
+	       		success: function(data){
+				if (data==" ")
+					{clearInterval(myinter) }
+				else
+					{
+					item=JSON.parse(data);
+					//document.getElementById("dataid").value=item['incr'];
+                    			for(each in item)
+						{
+						{% if  user.is_superuser %}
+						document.getElementById("dataid").value=item[each]['incr'];
+                    				x=new google.maps.LatLng(item[each]['lat'],item[each]['long']);                    							if(item[each]['pathid'] == 1){
+						myTrip1.push(x);
+						path1(myTrip1,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+                    				if(item[each]['pathid'] == 2){
+						myTrip2.push(x);
+						path1(myTrip2,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+                    				if(item[each]['pathid'] == 3){
+						myTrip3.push(x);
+						path1(myTrip3,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+						
+						{% elif user.is_staff %}
+						document.getElementById("dataid").value=item[each]['incr'];
+                    				x=new google.maps.LatLng(item[each]['lat'],item[each]['long']);                    							if(item[each]['pathid'] == 1){
+						myTrip1.push(x);
+						path1(myTrip1,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+                    				if(item[each]['pathid'] == 2){
+						myTrip2.push(x);
+						path1(myTrip2,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+						{% endif %}
+
+                    				}
+					}
+				}
+
+			});
+	
+	}
+var myinter=setInterval(plotmaps,5000);	
+</script>
+</body>
+</html> 

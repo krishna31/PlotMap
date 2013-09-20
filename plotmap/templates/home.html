@@ -5,22 +5,38 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 </head>
 <body>
-<div id="plotmap" style="width:1000px;height:600px;"></div>
+<div>
+<b>Hello  Mr. {{user}}</b>
+</div>
+<div style="width:10%;float:left;height:600px;background:#C8C8C8 ">
+{% if  user.is_superuser %}
+<a href="/getAllPath">All Path</a><br/>
+<a href="/path/1">Path1</a><br/>
+<a href="/path/2">Path2</a><br/>
+<a href="/path/3">Path3</a>
+{% elif user.is_staff %}
+<a href="/getAllPath">All Path</a><br/>
+<a href="/path/1">Path1</a><br/>
+<a href="/path/2">Path2</a><br/>
+{% else %}
+<a href="/path/3">Path3</a>
+{% endif %}
+</div>
+<div id="plotmap" style="width:90%;height:600px;"></div>
 <input id="dataid" type="hidden" value="0"/>
 <script>
 var lat={{data.lat}};
 var lang={{data.lang}};
 var name='{{data.name}}';
 var myCenter=new google.maps.LatLng(lat,lang);
-myTrip1=[myCenter];
-myTrip2=[];
+myTrip=[myCenter];
 var mapProp = {
   center:myCenter,
   zoom:10,
   mapTypeId:google.maps.MapTypeId.ROADMAP
   };
 var map=new google.maps.Map(document.getElementById("plotmap"),mapProp);
-setMarker(myCenter,name,lat,lang);
+setMarker(myCenter,name,lat,lang);	
 function setMarker(myCenter,name,lat,lang)
 	{
 		var content ="<div>Name:"+name+"<br> Latitude:"+lat+" <br> Langitude:"+lang+"</div>"
@@ -35,9 +51,9 @@ function setMarker(myCenter,name,lat,lang)
 
 	}
 
-function path1(myTrip,myCenter,name,lat,lang)
+function path1(myCenter,name,lat,lang)
 {
-//myTrip.push(myCenter);
+myTrip.push(myCenter);
 var flightPath=new google.maps.Polyline({
   path:myTrip,
   strokeColor:"#B6B6B4",
@@ -47,11 +63,12 @@ var flightPath=new google.maps.Polyline({
 flightPath.setMap(map);
 setMarker(myCenter,name,lat,lang);
 }
+/*
 function plotnew(myTrip,myCenter,name,lat,lang)
 	{
 		myTrip.push(myCenter)
 		path1(myTrip,myCenter,name,lat,lang)
-	}
+	}*/
 function plotmaps()
 	{
 		incr=document.getElementById("dataid").value;
@@ -67,8 +84,8 @@ function plotmaps()
 					item=JSON.parse(data);
 					document.getElementById("dataid").value=item['incr'];
 					x=new google.maps.LatLng(item['lat'],item['long']);
-					plotnew(myTrip1,x,item['name'],item['lat'],item['long']);
-					plotnew(myTrip2,x,item['name'],item['lat'],item['long']);
+					path1(x,item['name'],item['lat'],item['long']);
+					//plotnew(myTrip2,x,item['name'],item['lat'],item['long']);
 					}
 				}
 
