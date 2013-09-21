@@ -13,21 +13,21 @@
 <b><a href="/login">Login</a></b>
 {% endif %}
 </div>
-<div style="width:10%;float:left;height:600px;background:#C8C8C8 ">
+<div style="width:15%;float:left;height:600px;background:#C8C8C8 ">
 {% if  user.is_superuser %}
 <a href="/getAllPath">All Path</a><br/>
-<a href="/path/1">Path1</a><br/>
-<a href="/path/2">Path2</a><br/>
-<a href="/path/3">Path3</a>
+<a href="/path/1">Mumbai to pune</a><br/>
+<a href="/path/2">Delhi to jaipur</a><br/>
+<a href="/path/3">Ahmedabad to Mumbai</a>
 {% elif user.is_staff %}
 <a href="/getAllPath">All Path</a><br/>
-<a href="/path/1">Path1</a><br/>
-<a href="/path/2">Path2</a><br/>
+<a href="/path/1">Mumbai to pune</a><br/>
+<a href="/path/2">Delhi to jaipur</a><br/>
 {% else %}
-<a href="/path/3">Path3</a>
+<a href="/path/3">Ahmedabad to Mumbai</a>
 {% endif %}
 </div>
-<div id="plotmap" style="width:90%;height:600px;"></div>
+<div id="plotmap" style="width:85%;height:600px;"></div>
 <input id="dataid" type="hidden" value="0"/>
 <script>
 //var myCenter=new google.maps.LatLng(lat,lang);
