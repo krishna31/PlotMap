@@ -12,7 +12,6 @@ Requirement for the project:
 How to run:
 
 	Clone the git Repository
-	Extract the file
 	open the terminal
 	go inside the folder
 	run python manage.py runserver
@@ -21,4 +20,5 @@ How to run:
 Note:
 
 	tested on firefox 23.0
+	Os:ubuntu 12.04 LTS
 
