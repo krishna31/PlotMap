@@ -19,6 +19,6 @@ How to run:
 
 Note:
 
-	tested on firefox 23.0
+	tested on firefox 23.0 and Chrome
 	Os:ubuntu 12.04 LTS
 
