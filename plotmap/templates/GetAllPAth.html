@@ -7,6 +7,11 @@
 <body>
 <div>
 <b>Hello  Mr. {{user}}</b>
+{% if  user.is_authenticated %}
+<b><a href="/logout">Logout</a></b>
+{% else %}
+<b><a href="/login">Login</a></b>
+{% endif %}
 </div>
 <div style="width:10%;float:left;height:600px;background:#C8C8C8 ">
 {% if  user.is_superuser %}
@@ -26,12 +31,12 @@
 <input id="dataid" type="hidden" value="0"/>
 <script>
 //var myCenter=new google.maps.LatLng(lat,lang);
-myTrip1=[];
-myTrip2=[];
-myTrip3=[];
 var myCenter=new google.maps.LatLng({{path1.lat}},{{path1.lang}});
 var myCenter2=new google.maps.LatLng({{path2.lat}},{{path2.lang}});
 var myCenter3=new google.maps.LatLng({{path3.lat}},{{path3.lang}});
+myTrip1=[myCenter];
+myTrip2=[myCenter2];
+myTrip3=[myCenter3];
 var mapProp = {
   center:myCenter,	
   zoom:5,

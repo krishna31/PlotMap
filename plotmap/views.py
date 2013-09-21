@@ -5,12 +5,16 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from plotmap.models import *
 import json
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def home(request):
-	data=location.objects.get(id=1)
-	variables = RequestContext(request, {'data' : data,'user':request.user})
-     	template='home.html'
-     	return render_to_response(template, variables)
+	if (request.user.is_superuser or request.user.is_staff):
+		return HttpResponseRedirect('/getAllPath')
+	else:
+		return HttpResponseRedirect("/path/3")
+
+@login_required
 def getPath(request,id):
 	path.objects.filter(id=id)
 	if path:
@@ -19,7 +23,8 @@ def getPath(request,id):
 		variables = RequestContext(request, {'data' : data,'user':request.user})
      		template='home.html'
      		return render_to_response(template, variables)
-		
+
+@login_required		
 def getLocation(request,incr=0):
 	if request.is_ajax():
 		incr=request.POST.get('incr', False)
@@ -43,7 +48,7 @@ def getLocation(request,incr=0):
 		return HttpResponse("Finished")
 		
 		
-	
+@login_required	
 def getAllPath(request,incr=0):
         path1=path.objects.all()[0]
         path2=path.objects.all()[1]

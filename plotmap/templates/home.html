@@ -7,6 +7,11 @@
 <body>
 <div>
 <b>Hello  Mr. {{user}}</b>
+{% if  user.is_authenticated %}
+<b><a href="/logout">Logout</a></b>
+{% else %}
+<b><a href="/login">Login</a></b>
+{% endif %}
 </div>
 <div style="width:10%;float:left;height:600px;background:#C8C8C8 ">
 {% if  user.is_superuser %}
@@ -48,6 +53,7 @@ function setMarker(myCenter,name,lat,lang)
   		content:content
   		});
 	infowindow.open(map,marker);
+	map.setCenter(marker.getPosition());
 
 	}
 
