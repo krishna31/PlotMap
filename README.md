@@ -7,6 +7,8 @@ Requirement for the project:
 
 	python 2.7
 	Django 1.4.5
+	django-registration module
+  	To install django-registration open terminal and type:easy_install django-registration>=0.8
 	Internet connection
 
 How to run:
