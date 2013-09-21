@@ -7,12 +7,13 @@ Requirement for the project:
 
 	python 2.7
 	Django 1.4.5
+	django-registration module
+  	To install django-registration open terminal and type:easy_install django-registration>=0.8
 	Internet connection
 
 How to run:
 
 	Clone the git Repository
-	Extract the file
 	open the terminal
 	go inside the folder
 	run python manage.py runserver
@@ -20,5 +21,6 @@ How to run:
 
 Note:
 
-	tested on firefox 23.0
+	tested on firefox 23.0 and Chrome
+	Os:ubuntu 12.04 LTS
 
